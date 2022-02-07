@@ -14,7 +14,7 @@ mkdir -p src/server/$APP-server
 # configs
 mkdir -p etc/server
 mkdir -p etc/nginx/conf.d
-touch -p etc/nginx/conf.d/$APP.conf
+touch etc/nginx/conf.d/$APP.conf
 
 # volumes
 mkdir -p docker/mysql/logs

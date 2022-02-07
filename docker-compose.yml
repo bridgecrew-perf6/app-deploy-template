@@ -27,6 +27,8 @@ services:
       - ./etc/server/config.json:/app/config.json
       - ./docker/server/data:/app/data/:rw
     restart: always
+    expose:
+      - "8080"
     networks:
       "${APP}-net":
         ipv4_address: 172.19.0.3
@@ -39,6 +41,8 @@ services:
     environment:
       BASE_URL: "/swagger"
       SWAGGER_JSON: /docs/api.swagger.yaml
+    expose:
+      - "8080"
     networks:
       "${APP}-net":
         ipv4_address: 172.19.0.4
@@ -51,7 +55,8 @@ services:
     volumes:
       - ./docker/nginx/logs:/var/log/nginx
       - ./etc/nginx/conf.d:/etc/nginx/conf.d/
-      - ./src/web/${APP}-web:/var/www/${APP}-web
+      # static file
+      - ./src/web/web:/var/www/web
     command: [nginx, '-g', 'daemon off;']
     networks:
       "${APP}-net":
