@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  mysql-service:
+    image: mysql:latest
+    container_name: "${APP}-mysql"
+    restart: always
+    volumes:
+      - ./docker/mysql/logs:/logs/:rw
+      - ./docker/mysql/data:/var/lib/mysql/:rw
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    expose:
+      - "3306"
+    networks:
+      "${APP}-net":
+        ipv4_address: 172.19.0.2
+    command:
+      ["--innodb-use-native-aio=0"]
+
+  api-service:
+    image: "${API_IMAGE}"
+    container_name: "${APP}-api"
+    volumes:
+      - ./etc/server/config.json:/app/config.json
+      - ./docker/server/data:/app/data/:rw
+    restart: always
+    networks:
+      "${APP}-net":
+        ipv4_address: 172.19.0.3
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "${APP}-swagger"
+    volumes:
+      - ./src/server/${API_REPO}/docs/api.swagger.yaml:/docs/api.swagger.yaml:ro
+    environment:
+      BASE_URL: "/swagger"
+      SWAGGER_JSON: /docs/api.swagger.yaml
+    networks:
+      "${APP}-net":
+        ipv4_address: 172.19.0.4
+
+  nginx-service:
+    container_name: $APP-nginx
+    image: nginx:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - ./docker/nginx/logs:/var/log/nginx
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d/
+      - ./src/web/${APP}-web:/var/www/${APP}-web
+    command: [nginx, '-g', 'daemon off;']
+    networks:
+      "${APP}-net":
+        ipv4_address: 172.19.0.99
+
+networks:
+  "${APP}-net":
+    external: true
