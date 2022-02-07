@@ -15,7 +15,7 @@ services:
     expose:
       - "3306"
     networks:
-      "${APP}-net":
+      default:
         ipv4_address: 172.19.0.2
     command:
       ["--innodb-use-native-aio=0"]
@@ -30,7 +30,7 @@ services:
     expose:
       - "8080"
     networks:
-      "${APP}-net":
+      default:
         ipv4_address: 172.19.0.3
 
   swagger-ui:
@@ -44,7 +44,7 @@ services:
     expose:
       - "8080"
     networks:
-      "${APP}-net":
+      default:
         ipv4_address: 172.19.0.4
 
   nginx-service:
@@ -59,9 +59,11 @@ services:
       - ./src/web/web:/var/www/web
     command: [nginx, '-g', 'daemon off;']
     networks:
-      "${APP}-net":
+      default:
         ipv4_address: 172.19.0.99
 
 networks:
-  "${APP}-net":
+  - default:
     external: true
+    name: ${APP}-net
+
