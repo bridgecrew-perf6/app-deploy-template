@@ -63,7 +63,6 @@ services:
         ipv4_address: 172.19.0.99
 
 networks:
-  - default:
+  default:
     external: true
     name: ${APP}-net
-
