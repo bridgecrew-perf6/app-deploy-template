@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+set -x
+
 source .env
 
 echo "APP: "$APP
@@ -25,4 +27,4 @@ mkdir -p docker/server/data
 mkdir -p docker/nginx/logs
 
 # network
-docker network create --driver bridge --subnet $IP_MASK/8 --gateway $IP_GATEWAY $APP-net
+docker network create --driver bridge --subnet $IP_MASK/16 --gateway $IP_GATEWAY $APP-net
