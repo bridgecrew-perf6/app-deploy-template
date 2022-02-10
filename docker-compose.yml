@@ -16,7 +16,7 @@ services:
       - "3306"
     networks:
       default:
-        ipv4_address: 172.19.0.2
+        ipv4_address: ${IP_MYSQL}
     command:
       ["--innodb-use-native-aio=0"]
 
@@ -31,7 +31,7 @@ services:
       - "8080"
     networks:
       default:
-        ipv4_address: 172.19.0.3
+        ipv4_address: ${IP_API}
 
   swagger-ui:
     image: swaggerapi/swagger-ui
@@ -45,7 +45,7 @@ services:
       - "8080"
     networks:
       default:
-        ipv4_address: 172.19.0.4
+        ipv4_address: ${IP_SWAGGER}
 
   nginx-service:
     container_name: $APP-nginx
@@ -57,10 +57,13 @@ services:
       - ./etc/nginx/conf.d:/etc/nginx/conf.d/
       # static file
       - ./src/web/web:/var/www/web
+    extra_hosts:
+      - "api-service:${IP_API}"
+      - "swagger-ui:${IP_SWAGGER}"
     command: [nginx, '-g', 'daemon off;']
     networks:
       default:
-        ipv4_address: 172.19.0.99
+        ipv4_address: ${IP_NGINX}
 
 networks:
   default:

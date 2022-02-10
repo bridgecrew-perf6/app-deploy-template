@@ -25,4 +25,4 @@ mkdir -p docker/server/data
 mkdir -p docker/nginx/logs
 
 # network
-docker network create --driver bridge --subnet 172.19.0.0/16 --gateway 172.19.0.1 $APP-net
+docker network create --driver bridge --subnet $IP_MASK/8 --gateway $IP_GATEWAY $APP-net
