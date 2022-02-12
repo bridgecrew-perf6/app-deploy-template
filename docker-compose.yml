@@ -37,7 +37,7 @@ services:
     image: swaggerapi/swagger-ui
     container_name: "${APP}-swagger"
     volumes:
-      - ./src/server/${API_REPO}/docs/api.swagger.yaml:/docs/api.swagger.yaml:ro
+      - ./src/server/${APP}-server/docs/api.swagger.yaml:/docs/api.swagger.yaml:ro
     environment:
       BASE_URL: "/swagger"
       SWAGGER_JSON: /docs/api.swagger.yaml
@@ -56,7 +56,7 @@ services:
       - ./docker/nginx/logs:/var/log/nginx
       - ./etc/nginx/conf.d:/etc/nginx/conf.d/
       # static file
-      - ./src/web/web:/var/www/web
+      - ./src/web/${APP}-web:/var/www/web
     extra_hosts:
       - "api-service:${IP_API}"
       - "swagger-ui:${IP_SWAGGER}"
