@@ -15,8 +15,12 @@ mkdir -p src/server/$APP-server
 
 # configs
 mkdir -p etc/server
+# nginx
 mkdir -p etc/nginx/conf.d
 touch etc/nginx/conf.d/app.conf
+
+# swagger
+htpasswd -c etc/nginx/conf.d/swagger.passwd $SWAGGER_AUTH_USERNAME $SWAGGER_AUTH_PASSWORD
 
 # volumes
 mkdir -p docker/mysql/logs
