@@ -23,6 +23,8 @@ services:
   api-service:
     image: "${API_IMAGE}"
     container_name: "${APP}-api"
+    depends_on:
+      - mysql-service
     volumes:
       - ./etc/server/config.json:/app/config.json
       - ./docker/server/data:/app/data/:rw
@@ -50,6 +52,8 @@ services:
   nginx-service:
     container_name: $APP-nginx
     image: nginx:latest
+    depends_on:
+      - api-service
     ports:
       - ${NGINX_PORT}:8080
     volumes:

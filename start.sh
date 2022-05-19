@@ -4,4 +4,4 @@ source .env
 
 docker-compose up --build --no-start
 docker-compose up --no-start
-docker-compose restart
+docker-compose up --detach
